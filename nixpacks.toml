@@ -1,10 +1,16 @@
+[build]
+builder = "NIXPACKS"
+
+[start]
+cmd = "gunicorn backend_nc.wsgi:application --chdir backend_nc"
+
+[variables]
+PYTHON_VERSION = "3.11"
+
 [phases.setup]
-nixPkgs = ['python311', 'pipenv']
+nixPkgs = ["python311", "pip"]
 
 [phases.build]
 cmds = [
   "pip install -r backend_nc/requirements.txt"
 ]
-
-[start]
-cmd = "gunicorn backend_nc.wsgi:application --chdir backend_nc"
