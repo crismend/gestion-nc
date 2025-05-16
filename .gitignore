@@ -1,16 +1,23 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
+*.log
+*.pot
 db.sqlite3
 .env
 
-# Django static
+# Django
 /staticfiles/
 
-# Node + Vite (frontend)
+# Node + Vite frontend
 node_modules/
 dist/
 .vite/
+frontend-nc/.env
 
-# System
+# IDEs y sistema
 .DS_Store
+Thumbs.db
+.vscode/
+*.code-workspace
