@@ -8,9 +8,10 @@ cmd = "gunicorn backend_nc.wsgi:application --chdir backend_nc"
 PYTHON_VERSION = "3.11"
 
 [phases.setup]
-nixPkgs = ["python311", "pip"]
+nixPkgs = ["python311Full"]
 
 [phases.build]
 cmds = [
-  "pip install -r backend_nc/requirements.txt"
+  "python3 -m ensurepip",
+  "python3 -m pip install -r backend_nc/requirements.txt"
 ]
