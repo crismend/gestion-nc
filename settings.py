@@ -60,7 +60,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'backend_nc.urls'
+ROOT_URLCONF = 'urls' 
 
 TEMPLATES = [
     {
@@ -84,9 +84,24 @@ WSGI_APPLICATION = 'backend_nc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Configuración de base de datos
+# Configuración de la base de datos
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
+
+# Si quieres un fallback a SQLite cuando DATABASE_URL no está disponible:
+if os.environ.get('DATABASE_URL') is None:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+    print("WARNING: No DATABASE_URL environment variable set, using SQLite instead")
 
 
 # Password validation
