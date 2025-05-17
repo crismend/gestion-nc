@@ -1,4 +1,3 @@
-// services/ncService.js
 import axiosInstance from "./axiosInstance";
 
 const API_URL = "noconformidades/";

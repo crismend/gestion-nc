@@ -1,11 +1,15 @@
 import axios from "axios";
 
+// Usamos la variable de entorno de Vite
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Interceptor para agregar token en cada petición
+// Interceptor para agregar token JWT automáticamente
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
@@ -17,13 +21,13 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor para manejar errores globales (opcional)
+// Interceptor para manejar errores globales
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
       console.warn("Token expirado o inválido");
-      // Opcional: redirigir al login o refrescar token
+      // Aquí puedes redirigir al login si deseas
     }
     return Promise.reject(error);
   }

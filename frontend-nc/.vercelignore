@@ -1,0 +1,15 @@
+# Dependencias
+node_modules
+
+# Configuración local
+.vscode
+.env
+
+# Pruebas y coberturas (si los usaras)
+coverage
+tests
+cypress
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

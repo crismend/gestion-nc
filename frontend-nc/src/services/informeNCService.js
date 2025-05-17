@@ -1,4 +1,3 @@
-// services/informeNCService.js
 import axiosInstance from "./axiosInstance";
 
 const API_URL = "informes-nc/"; // Ya tienes baseURL definida en axiosInstance
