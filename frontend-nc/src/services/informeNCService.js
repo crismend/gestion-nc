@@ -1,22 +1,20 @@
 // services/informeNCService.js
 import axiosInstance from "./axiosInstance";
 
-const API_URL = "informes-nc/"; // Ya tienes baseURL definida en axiosInstance
-
 export const crearInformeNC = async (datos) => {
-  return await axiosInstance.post(API_URL, datos);
+  return await axiosInstance.post('informes-nc/', datos);
 };
 
 export const obtenerInformeNC = async (id) => {
-  const res = await axiosInstance.get(`${API_URL}${id}/`);
+  const res = await axiosInstance.get(`informes-nc/${id}/`);
   return res.data;
 };
 
 export const editarInformeNC = async (id, datos) => {
-  return await axiosInstance.put(`${API_URL}${id}/`, datos);
+  return await axiosInstance.put(`informes-nc/${id}/`, datos);
 };
 
 export const listarInformesNC = async () => {
-  const res = await axiosInstance.get(API_URL);
+  const res = await axiosInstance.get('informes-nc/');
   return res.data;
 };

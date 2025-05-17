@@ -1,7 +1,8 @@
+// services/axiosInstance.js
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL: import.meta.env.VITE_API_URL, // ✅ usa variable de entorno
   timeout: 10000,
 });
 
@@ -23,7 +24,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       console.warn("Token expirado o inválido");
-      // Opcional: redirigir al login o refrescar token
+      // Aquí podrías hacer: window.location.href = '/login'
     }
     return Promise.reject(error);
   }

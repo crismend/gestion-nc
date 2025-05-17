@@ -1,11 +1,10 @@
-import axios from 'axios'
-
-const API_URL = 'http://127.0.0.1:8000/api/token/' // endpoint del backend
+// services/authService.js
+import api from './axiosInstance' // Usa tu instancia configurada
 
 export const loginUser = async ({ username, password }) => {
-  const response = await axios.post(API_URL, {
+  const response = await api.post('token/', {
     username,
-    password
+    password,
   })
 
   return response.data // { access, refresh }
