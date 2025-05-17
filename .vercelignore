@@ -1,0 +1,9 @@
+# Archivos y carpetas que no deberían subirse a Vercel
+node_modules
+.vscode
+.env
+*.log
+.git
+.gitignore
+README.md
+public/dev-assets/
