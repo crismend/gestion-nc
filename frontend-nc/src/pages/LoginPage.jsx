@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-
+// cambios
 export default function LoginPage() {
   const { login } = useAuth()
   const [username, setUsername] = useState('')
