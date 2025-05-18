@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate()
 
+  // Verificar si hay sesión activa al montar
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken')
     const username = localStorage.getItem('username')
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
+  // Iniciar sesión y guardar tokens
   const login = async ({ username, password }) => {
     try {
       const data = await loginUser({ username, password })
@@ -40,14 +42,13 @@ export const AuthProvider = ({ children }) => {
       navigate('/dashboard')
     } catch (error) {
       console.error('Login fallido', error)
-      alert('Usuario o contraseña incorrectos')
+      throw error // Permite que LoginPage lo maneje con setError()
     }
   }
 
+  // Cerrar sesión
   const logout = () => {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('username')
+    localStorage.clear() // Limpia todo
     setUser(null)
     setToken(null)
     setIsAuthenticated(false)
@@ -55,7 +56,16 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading, token }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        logout,
+        loading,
+        token,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
