@@ -12,7 +12,7 @@ router.register(r'acciones', AccionViewSet)
 router.register(r'seguimientos', SeguimientoViewSet)
 router.register(r'informes-nc', InformeNoConformidadViewSet)
 router.register(r'informes-accion', InformeAccionViewSet)
-
+from core.views import test_login, reset_password
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
     # dashboard-indicadores
     path('api/dashboard/indicadores/', indicadores_dashboard, name='indicadores'),
     path('api/test-login/', test_login),
+    path('api/reset-password/', reset_password),
 ]

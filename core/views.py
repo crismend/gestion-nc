@@ -4,6 +4,7 @@ from .serializers import NoConformidadSerializer, AccionSerializer, SeguimientoS
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
 class NoConformidadViewSet(viewsets.ModelViewSet):
     queryset = NoConformidad.objects.all()
@@ -34,3 +35,13 @@ def test_login(request):
         return JsonResponse({'login': 'OK'})
     else:
         return JsonResponse({'login': 'fallido'})
+
+@csrf_exempt
+def reset_password(request):
+    try:
+        user = User.objects.get(username="cristian")
+        user.set_password("Nueva.Contraseña123")  # ✅ Pon la que tú quieras aquí
+        user.save()
+        return JsonResponse({"status": "contraseña actualizada"})
+    except User.DoesNotExist:
+        return JsonResponse({"error": "usuario no encontrado"})
