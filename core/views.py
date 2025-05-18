@@ -40,7 +40,7 @@ def test_login(request):
 def reset_password(request):
     try:
         user = User.objects.get(username="cristian")
-        user.set_password("Nueva.Contraseña123")  # ✅ Pon la que tú quieras aquí
+        user.set_password("Juan.ver0")  # ✅ Pon la que tú quieras aquí
         user.save()
         return JsonResponse({"status": "contraseña actualizada"})
     except User.DoesNotExist:
