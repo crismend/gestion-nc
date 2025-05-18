@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-// Rebuild for production Vercel env fix
+// 🔁 Cambio limpio para forzar deploy en Vercel
 export default function LoginPage() {
   const { login } = useAuth()
   const [username, setUsername] = useState('')
