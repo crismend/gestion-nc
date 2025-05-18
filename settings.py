@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 import dj_database_url
+from decouple import config
 
 from pathlib import Path
 from datetime import timedelta
@@ -84,14 +85,28 @@ WSGI_APPLICATION = 'backend_nc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# Configuración de base de datos
-# Configuración de la base de datos
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600
-    )
-}
+import dj_database_url
+from decouple import config
+import os
+
+DATABASE_URL = config('DATABASE_URL', default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600
+        )
+    }
+else:
+    print("⚠️ WARNING: DATABASE_URL not set. Falling back to SQLite (development only).")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+
 
 # Si quieres un fallback a SQLite cuando DATABASE_URL no está disponible:
 if os.environ.get('DATABASE_URL') is None:

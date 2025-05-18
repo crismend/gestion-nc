@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.views import NoConformidadViewSet, AccionViewSet, SeguimientoViewSet, InformeAccionViewSet, InformeNoConformidadViewSet
 from core.views_dashboard import indicadores_dashboard
+from core.views import test_login
 
 router = DefaultRouter()
 router.register(r'noconformidades', NoConformidadViewSet)
@@ -22,4 +23,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # dashboard-indicadores
     path('api/dashboard/indicadores/', indicadores_dashboard, name='indicadores'),
+    path('api/test-login/', test_login),
 ]
