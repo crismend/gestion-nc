@@ -1,11 +1,11 @@
-// services/authService.js
-import api from './axiosInstance' // Usa tu instancia configurada
+// services/axiosInstance.js
+import axios from "axios";
 
-export const loginUser = async ({ username, password }) => {
-  const response = await api.post('token/', {
-    username,
-    password,
-  })
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, // ✅ Lee desde .env o entorno de Vercel
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-  return response.data // { access, refresh }
-}
+export default axiosInstance;

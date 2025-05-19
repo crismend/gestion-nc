@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 import dj_database_url
 from decouple import config
-
+import dj_database_url
 from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -94,7 +96,7 @@ import os
 from decouple import config
 import dj_database_url
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 DATABASE_URL = config('DATABASE_URL', default=None)
 
@@ -187,7 +189,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://gestion-nc.vercel.app",  # Reemplaza por tu dominio real
+]
 
 
 
