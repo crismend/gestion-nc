@@ -18,3 +18,7 @@ export const listarInformesNC = async () => {
   const res = await axiosInstance.get('informes-nc/');
   return res.data;
 };
+
+export const eliminarInformeNC = async (id) => {
+  return await axiosInstance.delete(`noconformidades/${id}/`);
+};

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { listarInformesNC } from "../../services/informeNCService"
 import { Link } from "react-router-dom"
-import { FaEye, FaEdit, FaFileExport } from "react-icons/fa"
+import { eliminarInformeNC } from "../../services/informeNCService";
+import { FaTrash } from "react-icons/fa";
 
 export default function ListadoInformesNC() {
   const [informes, setInformes] = useState([])
@@ -32,6 +33,20 @@ export default function ListadoInformesNC() {
         return `${base} bg-gray-50 text-gray-500 border-gray-200`;
     }
   };
+
+  const handleEliminar = async (id) => {
+    if (!window.confirm("¿Estás seguro de eliminar esta No Conformidad?")) return;
+
+    try {
+      await eliminarInformeNC(id);
+      setInformes((prev) => prev.filter((nc) => nc.id !== id));
+      alert("Informe eliminado correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar informe:", error);
+      alert("No se pudo eliminar el informe.");
+    }
+  };
+
 
 
   return (
@@ -118,6 +133,14 @@ export default function ListadoInformesNC() {
                     <Link to={`/noconformidades/${inf.id}/ver`} title="Ver detalle / Exportar">
                       <FaFileExport className="inline hover:text-purple-600" />
                     </Link>
+                    <button
+                      onClick={() => handleEliminar(inf.id)}
+                      title="Eliminar"
+                      className="inline ml-2 text-red-600 hover:text-red-700"
+                    >
+                      <FaTrash className="inline text-base align-middle" />
+                    </button>
+
                   </td>
                 </tr>
               ))}
