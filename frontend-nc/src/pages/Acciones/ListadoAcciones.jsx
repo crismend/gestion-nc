@@ -12,7 +12,7 @@ export default function ListadoAcciones() {
   useEffect(() => {
     const fetchInformes = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/informes-accion/", {
+        const res = await axiosInstance.get("informes-accion/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
