@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import { Link } from "react-router-dom"
-import { useAuth } from "../../context/AuthContext"
-import { FaEdit, FaFileExport } from "react-icons/fa"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { FaEdit, FaFileExport, FaTrash } from "react-icons/fa";
+import { eliminarInformeAccion } from "../../services/informeAccionService";
 
 export default function ListadoAcciones() {
-  const { token } = useAuth()
-  const [informes, setInformes] = useState([])
+  const { token } = useAuth();
+  const [informes, setInformes] = useState([]);
 
   useEffect(() => {
     const fetchInformes = async () => {
@@ -15,15 +16,29 @@ export default function ListadoAcciones() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
-        setInformes(res.data)
+        });
+        setInformes(res.data);
       } catch (error) {
-        console.error("Error al cargar informes:", error)
+        console.error("Error al cargar informes:", error);
       }
-    }
+    };
 
-    fetchInformes()
-  }, [token])
+    fetchInformes();
+  }, [token]);
+
+  const handleEliminar = async (id) => {
+    const confirmar = window.confirm("¿Estás seguro de eliminar este informe?");
+    if (!confirmar) return;
+
+    try {
+      await eliminarInformeAccion(id);
+      setInformes((prev) => prev.filter((informe) => informe.id !== id));
+      alert("Informe eliminado correctamente.");
+    } catch (error) {
+      console.error("Error al eliminar informe:", error);
+      alert("Hubo un error al eliminar el informe.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6">
@@ -85,6 +100,13 @@ export default function ListadoAcciones() {
                   <Link to={`/acciones/${informe.id}/ver`} title="Ver / Exportar">
                     <FaFileExport className="inline hover:text-purple-600" />
                   </Link>
+                  <button
+                    onClick={() => handleEliminar(informe.id)}
+                    title="Eliminar"
+                    className="inline ml-2 text-red-600 hover:text-red-800"
+                  >
+                    <FaTrash />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -99,5 +121,5 @@ export default function ListadoAcciones() {
         </table>
       </div>
     </div>
-  )
+  );
 }
