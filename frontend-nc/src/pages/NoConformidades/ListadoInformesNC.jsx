@@ -136,7 +136,7 @@ export default function ListadoInformesNC() {
                     <button
                       onClick={() => handleEliminar(inf.id)}
                       title="Eliminar"
-                      className="inline ml-2 text-red-600 hover:text-red-700"
+                      className="inline ml-2 text-red-500 hover:text-red-700"
                     >
                       <FaTrash className="inline text-base align-middle" />
                     </button>
