@@ -103,10 +103,11 @@ export default function ListadoAcciones() {
                   <button
                     onClick={() => handleEliminar(informe.id)}
                     title="Eliminar"
-                    className="inline ml-2 text-red-600 hover:text-red-800"
+                    className="inline ml-2 text-red-600 hover:text-red-700"
                   >
-                    <FaTrash />
+                    <FaTrash className="inline text-base align-middle" />
                   </button>
+
                 </td>
               </tr>
             ))}
