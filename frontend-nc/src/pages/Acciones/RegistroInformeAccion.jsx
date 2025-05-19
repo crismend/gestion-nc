@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react"
 import { Trash2 } from "lucide-react"
-import { crearInformeAccion } from '../../services/informeAccionService'
-import { listarInformesAccion } from "../../services/informeAccionService"
 import { useAuth } from '../../context/AuthContext'
 import { toast } from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
-import axios from "axios"
+import axiosInstance from "../../services/axiosInstance";
 
 
 
@@ -55,13 +53,14 @@ export default function RegistroInformeAccion() {
     if (isEditMode) {
       const fetchInforme = async () => {
         try {
-          const token = localStorage.getItem("accessToken")
-          const response = await axios.get(`http://127.0.0.1:8000/api/informes-accion/${id}/`, {
+          const token = localStorage.getItem("accessToken");
+          const response = await axiosInstance.get(`informes-accion/${id}/`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
-          })
+          });
+
           setFormData({
             ...response.data,
             codigo: response.data.codigo || "",
@@ -80,18 +79,19 @@ export default function RegistroInformeAccion() {
             evaluacion_eficacia: response.data.evaluacion_eficacia || "",
             motivo_cierre: response.data.motivo_cierre || "",
             fecha_cierre_seguridad: response.data.fecha_cierre_seguridad || "",
-            validado_por_seguridad: response.data.validado_por_seguridad || ""
-          })
-
+            validado_por_seguridad: response.data.validado_por_seguridad || "",
+          });
 
         } catch (error) {
-          console.error("Error al cargar el informe:", error)
+          console.error("❌ Error al cargar el informe:", error);
+          toast.error("No se pudo cargar el informe");
         }
-      }
+      };
 
-      fetchInforme()
+      fetchInforme();
     }
-  }, [id])
+  }, [id]);
+
 
 
 
@@ -149,17 +149,17 @@ export default function RegistroInformeAccion() {
   }
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("accessToken")
-    const isEditMode = Boolean(id) // ya definido antes
+    const token = localStorage.getItem("accessToken");
+    const isEditMode = Boolean(id);
 
     const url = isEditMode
-      ? `http://127.0.0.1:8000/api/informes-accion/${id}/`
-      : "http://127.0.0.1:8000/api/informes-accion/"
+      ? `informes-accion/${id}/`
+      : "informes-accion/";
 
-    const method = isEditMode ? "put" : "post"
+    const method = isEditMode ? "put" : "post";
 
     try {
-      const response = await axios({
+      const response = await axiosInstance({
         method,
         url,
         data: formData,
@@ -167,15 +167,14 @@ export default function RegistroInformeAccion() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      })
+      });
 
-      console.log("✅ Informe guardado: ", response)
-      toast.success("Informe guardado correctamente")
+      console.log("✅ Informe guardado: ", response);
+      toast.success("Informe guardado correctamente");
 
-      navigate("/acciones")
+      navigate("/acciones");
 
       if (!isEditMode) {
-        // Solo limpiamos si fue una creación nueva
         setFormData({
           codigo: "",
           fecha_apertura: "",
@@ -194,26 +193,27 @@ export default function RegistroInformeAccion() {
           motivo_cierre: "",
           fecha_cierre_seguridad: "",
           validado_por_seguridad: "",
-        })
+        });
 
         setNuevaAccion({
           tipo: "correctiva",
           descripcion: "",
           fecha_compromiso: "",
           responsable: "",
-        })
+        });
 
         setNuevoSeguimiento({
           fecha: "",
           comentario: "",
-        })
+        });
       }
 
     } catch (error) {
-      console.error("❌ Error al guardar: ", error)
-      toast.error("Hubo un error al guardar el informe")
+      console.error("❌ Error al guardar: ", error);
+      toast.error("Hubo un error al guardar el informe");
     }
-  }
+  };
+
 
 
 

@@ -1,55 +1,54 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
-import axios from "axios"
-import { useAuth } from "../../context/AuthContext"
-import html2pdf from "html2pdf.js"
-import PlantillaPDFAccion from "../../components/PlantillaPDFAccion"
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../../services/axiosInstance"; // ✅ Corregido
+import { useAuth } from "../../context/AuthContext";
+import html2pdf from "html2pdf.js";
+import PlantillaPDFAccion from "../../components/PlantillaPDFAccion";
 
 export default function DetalleInformeAccion() {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const { token } = useAuth()
-  const [informe, setInforme] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { token } = useAuth();
+  const [informe, setInforme] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInforme = async () => {
       try {
-        setLoading(true)
-        const res = await axios.get(`http://127.0.0.1:8000/api/informes-accion/${id}/`, {
+        setLoading(true);
+        const res = await axiosInstance.get(`informes-accion/${id}/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        })
-        setInforme(res.data)
+        });
+        setInforme(res.data);
       } catch (error) {
-        console.error("❌ Error al cargar informe de acción:", error)
+        console.error("❌ Error al cargar informe de acción:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchInforme()
-  }, [id, token])
+    };
+    fetchInforme();
+  }, [id, token]);
 
   const exportarPDF = () => {
     if (!informe) {
-      console.warn("⚠️ Informe aún no cargado.")
-      return
+      console.warn("⚠️ Informe aún no cargado.");
+      return;
     }
 
-    const element = document.getElementById("pdf")
+    const element = document.getElementById("pdf");
     const opciones = {
       margin: 10,
       filename: `${informe.codigo || "informe"}_InformeAccion.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    }
+    };
 
-    html2pdf().set(opciones).from(element).save()
-  }
+    html2pdf().set(opciones).from(element).save();
+  };
 
-  // Estado para mostrar spinner de carga
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -58,10 +57,9 @@ export default function DetalleInformeAccion() {
           <p className="text-gray-600 font-medium">Cargando informe...</p>
         </div>
       </div>
-    )
+    );
   }
 
-  // Estado para mostrar error si no se encuentra el informe
   if (!informe) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
@@ -79,10 +77,9 @@ export default function DetalleInformeAccion() {
           </button>
         </div>
       </div>
-    )
+    );
   }
 
-  // Función para determinar etiqueta de estado según campo estado del informe
   const getEstadoTag = () => {
     switch (informe.estado) {
       case "pendiente":
@@ -90,27 +87,27 @@ export default function DetalleInformeAccion() {
           <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-yellow-200">
             Pendiente
           </span>
-        )
+        );
       case "en_proceso":
         return (
           <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-blue-200">
             En proceso
           </span>
-        )
+        );
       case "cerrada":
         return (
           <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-green-200">
             Cerrada
           </span>
-        )
+        );
       default:
         return (
           <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-gray-200">
             {informe.estado?.replace("_", " ") || "Sin estado"}
           </span>
-        )
+        );
     }
-  }
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -148,17 +145,9 @@ export default function DetalleInformeAccion() {
 
       {/* Contenido principal */}
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
-        {/* Banner superior */}
-
-
-
-
-        {/* Contenido principal - Usando la plantilla PDF existente */}
         <div className="p-6">
           <PlantillaPDFAccion informe={informe} />
         </div>
-
-        {/* Pie de página */}
         <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 text-right">
           <p className="text-xs text-gray-500 italic">
             Documento generado automáticamente - Sistema Gestión Acciones (ISOpyme)
@@ -173,5 +162,5 @@ export default function DetalleInformeAccion() {
         </div>
       </div>
     </div>
-  )
+  );
 }
