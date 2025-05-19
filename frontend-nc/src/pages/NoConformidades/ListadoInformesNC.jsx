@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { listarInformesNC } from "../../services/informeNCService"
 import { Link } from "react-router-dom"
 import { eliminarInformeNC } from "../../services/informeNCService";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaEdit, FaFileExport } from "react-icons/fa";
 
 export default function ListadoInformesNC() {
   const [informes, setInformes] = useState([])
