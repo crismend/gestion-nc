@@ -89,6 +89,13 @@ import dj_database_url
 from decouple import config
 import os
 
+from pathlib import Path
+import os
+from decouple import config
+import dj_database_url
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
@@ -103,9 +110,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
 
 
 # Si quieres un fallback a SQLite cuando DATABASE_URL no está disponible:
