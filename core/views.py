@@ -2,6 +2,8 @@ from rest_framework import viewsets
 from .models import NoConformidad, Accion, Seguimiento, InformeAccion, InformeNoConformidad
 from .serializers import NoConformidadSerializer, AccionSerializer, SeguimientoSerializer, InformeAccionSerializer, InformeNoConformidadSerializer
 from django.contrib.auth import authenticate
+from django.db.models import Func, IntegerField, F, Value
+from django.db.models.functions import Substr, Cast
 # from django.http import JsonResponse
 # from django.views.decorators.csrf import csrf_exempt
 # from django.contrib.auth.models import User
@@ -21,8 +23,9 @@ class SeguimientoViewSet(viewsets.ModelViewSet):
     serializer_class = SeguimientoSerializer
 
 class InformeAccionViewSet(viewsets.ModelViewSet):
-    # queryset = InformeAccion.objects.all()
-    queryset = InformeAccion.objects.all().order_by('fecha_apertura', 'codigo')
+    queryset = InformeAccion.objects.annotate(
+        codigo_num=Cast(Substr('codigo', 4), IntegerField())
+    ).order_by('fecha_apertura', 'codigo_num')
     serializer_class = InformeAccionSerializer
 
 class InformeNoConformidadViewSet(viewsets.ModelViewSet):
