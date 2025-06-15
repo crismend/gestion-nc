@@ -21,7 +21,8 @@ class SeguimientoViewSet(viewsets.ModelViewSet):
     serializer_class = SeguimientoSerializer
 
 class InformeAccionViewSet(viewsets.ModelViewSet):
-    queryset = InformeAccion.objects.all()
+    # queryset = InformeAccion.objects.all()
+    queryset = InformeAccion.objects.all().order_by('fecha_apertura', 'codigo')
     serializer_class = InformeAccionSerializer
 
 class InformeNoConformidadViewSet(viewsets.ModelViewSet):
