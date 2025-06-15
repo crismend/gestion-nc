@@ -25,7 +25,7 @@ class InformeAccionViewSet(viewsets.ModelViewSet):
     serializer_class = InformeAccionSerializer
 
 class InformeNoConformidadViewSet(viewsets.ModelViewSet):
-    queryset = InformeNoConformidad.objects.all()
+    queryset = InformeNoConformidad.objects.all().order_by('fecha_deteccion', 'codigo')
     serializer_class = InformeNoConformidadSerializer
 
 
